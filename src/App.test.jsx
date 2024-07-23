@@ -11,11 +11,9 @@ test('renders App component', () => {
     expect(header).toBeInTheDocument();
 });
 
-test('add todo', () => {
-    render(<App />);
-
+function mockToDoItem(text) {
     const desc = screen.getByPlaceholderText('Description');
-    fireEvent.change(desc, { target: { value: 'Go to coffee' } });
+    fireEvent.change(desc, { target: { value: text } });
 
     const date = screen.getByPlaceholderText('Date');
     fireEvent.change(date, { target: { value: '29.12.2023' } });
@@ -23,9 +21,29 @@ test('add todo', () => {
     const status = screen.getByPlaceholderText('Status');
     fireEvent.change(status, { target: { value: 'Open' } });
 
-    const button = screen.getByText('Add');
-    fireEvent.click(button);
+    const addButton = screen.getByText('Add');
+    fireEvent.click(addButton);
+}
+
+test('add todo', () => {
+    render(<App />);
+
+    mockToDoItem('Go to coffee');
 
     const table = screen.getByRole('table');
     expect(table).toHaveTextContent('Go to coffee');
+});
+
+test('clear todos', () => {
+    render(<App />);
+
+    mockToDoItem('Go to coffee');
+
+    const table = screen.getByRole('table');
+    expect(table).toHaveTextContent('Go to coffee');
+
+    const clearButton = screen.getByText('Clear');
+    fireEvent.click(clearButton);
+
+    expect(table).not.toHaveTextContent('Go to coffee');
 });

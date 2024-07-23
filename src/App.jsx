@@ -33,6 +33,7 @@ function App() {
           }
         </tbody>
       </table>
+      <button onClick={() => setTodos([])}>Clear</button>
     </>
   );
 }
